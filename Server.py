@@ -57,13 +57,20 @@ def sendMsg():                                                             #
 		pass                                                       #
 
 
+def getmyip():                                                             #
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)               #
+	s.connect(("10.0.1.1",8000))                                       # finds the servers ip and returns it
+	myip = s.getsockname()[0]                                          #
+	s.close()                                                          #
+	return myip                                                        #
+
 
 def Main():
 	thread.start_new_thread(sendip,()) #Thread which runs sendip function
-	host = "localhost"
+	host = getmyip()
 	port = MYPORT
 	s = socket.socket()
-	s.bind(('',port))
+	s.bind((host,port))
 	thread.start_new_thread(sendMsg,()) #Thread which runs sendMsg function
 	while 1:
 		s.listen(3)
